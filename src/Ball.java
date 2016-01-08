@@ -31,15 +31,15 @@ public class Ball {
     public boolean goWest = false;
     public boolean goEast = false;
 
-    public Ball(){
+    public Ball(int cordX, int cordY){
 
         circle = new Circle();
         circle.setRadius(30);
 
         cannon = new Cannon();
-
-        x = 300;
-        y = 250;
+        
+        x = cordX;
+        y = cordY;
         deltaX = 1;
         deltaY = 1;
 
@@ -88,6 +88,10 @@ public class Ball {
             case LEFT:  goWest  = false; break;
             case RIGHT: goEast  = false; break;
         }
+    }
+
+    public Button getButton(){
+        return button;
     }
 
     public Circle getBall(){

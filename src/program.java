@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -24,16 +25,16 @@ public class program extends Application {
 
 
     public void start(Stage primaryStage) throws InterruptedException{
-
+        BorderPane root = new BorderPane();
         Pane pane = new Pane();
 
-        Ball ball = new Ball();
+        Ball ball = new Ball(250, 300);
 
+        pane.getChildren().addAll(ball.getBall(), ball.getButton(), ball.getCannon());
 
-
-        pane.getChildren().addAll(ball.getBall(),ball.button,ball.getCannon());
-
-        primaryStage.setScene(new Scene(pane, 600, 600));
+        root.setCenter(pane);
+        root.setTop(new MenuModule().getMenu());
+        primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
     }
 
