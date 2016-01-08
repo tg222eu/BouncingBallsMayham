@@ -8,6 +8,9 @@ public class Cannon {
 
     private Line line;
     public int degree;
+    public double endX;
+    public double endY;
+
 
 
     public Cannon(){
@@ -42,13 +45,15 @@ public class Cannon {
         }
 
 
-        double endX = x + 40 * Math.cos(degree * (Math.PI / 180));
-        double endY = y + 40 * Math.sin(degree * (Math.PI / 180));
+        endX = x + 40 * Math.cos(degree * (Math.PI / 180));
+        endY = y + 40 * Math.sin(degree * (Math.PI / 180));
 
         line.setEndX(endX);
         line.setEndY(endY);
     }
 
     public Line getLine() { return line; }
+
+    public int getDegree() { return degree; }
 
 }

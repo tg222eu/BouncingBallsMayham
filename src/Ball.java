@@ -35,6 +35,8 @@ public class Ball {
     public boolean goEast = false;
     public boolean goClockwise = false;
     public boolean goCounterClock = false;
+    public boolean shootBullet = false;
+
 
     public Ball(int cordX, int cordY){
 
@@ -86,6 +88,7 @@ public class Ball {
             case RIGHT: goEast  = true; break;
             case E:     goClockwise = true; break;
             case Q:     goCounterClock = true; break;
+            case R:     shootBullet = true; break;
         }
     }
 
@@ -97,8 +100,10 @@ public class Ball {
             case RIGHT: goEast  = false; break;
             case E:     goClockwise = false; break;
             case Q:     goCounterClock = false; break;
+            case R:     shootBullet = false; break;
         }
     }
+
 
     public Button getButton(){
         return button;

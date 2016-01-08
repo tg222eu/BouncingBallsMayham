@@ -27,10 +27,11 @@ public class program extends Application {
         BorderPane root = new BorderPane();
         BallPane pane = new BallPane();
 
+        /*
         Ball ball = new Ball(250, 300);
 
         pane.getChildren().addAll(ball.getBall(), ball.getButton(), ball.getCannon());
-
+*/
         root.setCenter(pane);
         root.setTop(new MenuModule().getMenu());
         primaryStage.setScene(new Scene(root, 600, 600));
