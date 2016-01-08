@@ -1,6 +1,7 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -16,19 +17,18 @@ public class BallPane extends Pane {
 
     public BallPane(){
 
-        Button shoot = new Button("Shoot");
-        shoot.setLayoutX(300);
+        Button mode = new Button("Mode");
 
-        ball.button.setOnKeyPressed(Event -> {
+        ball.circle.setOnKeyPressed(Event -> {
             pressedKey(Event.getCode());
             ball.animation.play();
         });
 
-        ball.button.setOnKeyReleased(Event -> {
-            ball.releasedKey(Event.getCode());
+        ball.circle.setOnKeyReleased(Event -> {
+            releasedKey(Event.getCode());
         });
 
-        getChildren().addAll(ball.getBall(), ball.getButton(), ball.getCannon());
+        getChildren().addAll(ball.getBall(), ball.getCannon());
 
 
     }
@@ -42,7 +42,9 @@ public class BallPane extends Pane {
             case E:     ball.goClockwise = true; break;
             case Q:     ball.goCounterClock = true; break;
             case R:     ball.shootBullet = true; break;
-            case W:     shoot();
+            case W:     shoot(); break;
+            case M:     ball.gravityMode = false; break;
+            case N:     ball.gravityMode = true; break;
         }
     }
 
@@ -106,7 +108,6 @@ public class BallPane extends Pane {
             setLayoutY(y);
 
         }
-
     }
 }
 

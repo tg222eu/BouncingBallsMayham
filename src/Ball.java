@@ -17,8 +17,12 @@ public class Ball {
     double y;
     int deltaX;
     int deltaY;
+    double delta2X = 1;
+    double delta2Y = 1;
     public Enum pressedKey;
     public char ch;
+
+    public boolean gravityMode = false;
 
     public Circle bullet = new Circle();
 
@@ -27,7 +31,6 @@ public class Ball {
     public Circle circle;
 
     Cannon cannon = new Cannon();
-    Button button = new Button("run");
 
     public boolean goNorth = false;
     public boolean goSouth = false;
@@ -58,63 +61,50 @@ public class Ball {
         animation = new Timeline(new KeyFrame(Duration.millis(10), Event -> run()));
         animation.setCycleCount(Timeline.INDEFINITE);
 
-        button.setOnKeyPressed(Event -> {
-            pressedKey(Event.getCode());
-            animation.play();
-        });
-
-        button.setOnKeyReleased(Event -> {
-            releasedKey(Event.getCode());
-        });
 
     }
 
     public void run(){
-        if (goNorth) deltaY -= 1;
-        if (goSouth) deltaY += 1;
-        if (goEast)  deltaX += 1;
-        if (goWest)  deltaX -= 1;
+        if(!gravityMode) {
+            if (goNorth) deltaY = -1;
+            if (goSouth) deltaY = 1;
+            if (goEast) deltaX = 1;
+            if (goWest) deltaX = -1;
 
-        circle.setLayoutX(x + deltaX);
-        circle.setLayoutY(y + deltaY);
-        updateCannon(x+deltaX, y + deltaY, goClockwise, goCounterClock);
-    }
+            if(goNorth == true || goSouth == true) {
+                y = y + deltaY;
+            }
+            if(goEast == true || goWest == true){
+                x = x + deltaX;
+            }
 
-    public void pressedKey(KeyCode e){
-        switch (e) {
-            case UP:    goNorth = true; break;
-            case DOWN:  goSouth = true; break;
-            case LEFT:  goWest  = true; break;
-            case RIGHT: goEast  = true; break;
-            case E:     goClockwise = true; break;
-            case Q:     goCounterClock = true; break;
-            case R:     shootBullet = true; break;
+            circle.setLayoutX(x);
+            circle.setLayoutY(y);
+
+            updateCannon(x + deltaX, y + deltaY, goClockwise, goCounterClock);
+        }else{
+            if (goNorth && delta2Y > -1) delta2Y -= 0.01;
+            if (goSouth && delta2Y < 1.01) delta2Y += 0.01;
+            if (goEast && delta2X < 1.01) delta2X += 0.01;
+            if (goWest && delta2X > -1) delta2X -= 0.01;
+
+            if(x <= 0 || x >= 600){
+                delta2X *= -1;
+            }
+            if(y <= 0 || y >= 600){
+                delta2Y *= -1;
+            }
+
+            x = x + delta2X;
+            y = y + delta2Y;
+            circle.setLayoutX(x);
+            circle.setLayoutY(y);
+            updateCannon(x, y, goClockwise, goCounterClock);
         }
-    }
-
-    public void releasedKey(KeyCode e){
-        switch (e) {
-            case UP:    goNorth = false; break;
-            case DOWN:  goSouth = false; break;
-            case LEFT:  goWest  = false; break;
-            case RIGHT: goEast  = false; break;
-            case E:     goClockwise = false; break;
-            case Q:     goCounterClock = false; break;
-            case R:     shootBullet = false; break;
-        }
-    }
-
-
-    public Button getButton(){
-        return button;
     }
 
     public Circle getBall(){
         return circle;
-    }
-
-    public Circle getBullet(){
-        return bullet;
     }
 
     public Line getCannon() { return cannon.getLine(); }
