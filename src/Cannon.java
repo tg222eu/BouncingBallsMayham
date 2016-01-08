@@ -7,6 +7,7 @@ import javafx.scene.shape.Line;
 public class Cannon {
 
     private Line line;
+    public int degree;
 
 
     public Cannon(){
@@ -22,8 +23,17 @@ public class Cannon {
         line.setStartX(x);
         line.setStartY(y);
 
-        line.setEndY(y+40);
-        line.setEndX(x+40);
+        degree = degree + 1;
+
+        if(degree == 360){
+            degree = 1;
+        }
+
+        double endX = x + 40 * Math.cos(degree * (Math.PI / 180));
+        double endY = y + 40 * Math.sin(degree * (Math.PI / 180));
+
+        line.setEndX(endX);
+        line.setEndY(endY);
     }
 
     public Line getLine() { return line; }

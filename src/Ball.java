@@ -61,15 +61,14 @@ public class Ball {
     }
 
     public void run(){
-
-        updateCannon();
         if (goNorth) deltaY -= 1;
         if (goSouth) deltaY += 1;
         if (goEast)  deltaX += 1;
         if (goWest)  deltaX -= 1;
 
         circle.setLayoutX(x+deltaX);
-        circle.setLayoutY(y+deltaY);
+        circle.setLayoutY(y + deltaY);
+        updateCannon((int)(x+deltaX), (int)(y + deltaY));
     }
 
     public void pressedKey(KeyCode e){
@@ -100,7 +99,7 @@ public class Ball {
 
     public Line getCannon() { return cannon.getLine(); }
 
-    public void updateCannon(){
-        cannon.update(circle.getLayoutX(),circle.getLayoutY());
+    public void updateCannon(int x, int y){
+        cannon.update(x,y);
     }
 }
