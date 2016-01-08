@@ -95,6 +95,13 @@ public class BallPane extends Pane {
             x = x + dX;
             y = y + dY;
 
+            if(x <= 0 || x >= 600){
+                dX *= -1;
+            }
+            if(y <= 0 || y >= 600){
+                dY *= -1;
+            }
+
             setLayoutX(x);
             setLayoutY(y);
 
