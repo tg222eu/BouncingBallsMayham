@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 /**
@@ -22,6 +23,7 @@ public class Ball {
 
     public Circle circle;
 
+    Cannon cannon = new Cannon();
     Button button = new Button("run");
 
     public boolean goNorth = false;
@@ -34,6 +36,8 @@ public class Ball {
         circle = new Circle();
         circle.setRadius(30);
 
+        cannon = new Cannon();
+
         x = 300;
         y = 250;
         deltaX = 1;
@@ -45,18 +49,20 @@ public class Ball {
         animation = new Timeline(new KeyFrame(Duration.millis(10), Event -> run()));
         animation.setCycleCount(Timeline.INDEFINITE);
 
-        circle.setOnKeyPressed(Event -> {
+        button.setOnKeyPressed(Event -> {
             pressedKey(Event.getCode());
             animation.play();
         });
 
-        circle.setOnKeyReleased(Event -> {
+        button.setOnKeyReleased(Event -> {
             releasedKey(Event.getCode());
         });
 
     }
 
     public void run(){
+
+        updateCannon();
         if (goNorth) deltaY -= 1;
         if (goSouth) deltaY += 1;
         if (goEast)  deltaX += 1;
@@ -88,4 +94,9 @@ public class Ball {
         return circle;
     }
 
+    public Line getCannon() { return cannon.getLine(); }
+
+    public void updateCannon(){
+        cannon.update(circle.getLayoutX(),circle.getLayoutY());
+    }
 }

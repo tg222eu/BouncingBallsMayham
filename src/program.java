@@ -31,7 +31,7 @@ public class program extends Application {
 
 
 
-        pane.getChildren().addAll(ball.getBall());
+        pane.getChildren().addAll(ball.getBall(),ball.button,ball.getCannon());
 
         primaryStage.setScene(new Scene(pane, 600, 600));
         primaryStage.show();
