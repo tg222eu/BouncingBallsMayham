@@ -33,6 +33,8 @@ public class Ball {
     public boolean goSouth = false;
     public boolean goWest = false;
     public boolean goEast = false;
+    public boolean goClockwise = false;
+    public boolean goCounterClock = false;
 
     public Ball(int cordX, int cordY){
 
@@ -73,7 +75,7 @@ public class Ball {
 
         circle.setLayoutX(x + deltaX);
         circle.setLayoutY(y + deltaY);
-        updateCannon((int) (x + deltaX), (int) (y + deltaY));
+        updateCannon(x+deltaX, y + deltaY, goClockwise, goCounterClock);
     }
 
     public void pressedKey(KeyCode e){
@@ -82,6 +84,8 @@ public class Ball {
             case DOWN:  goSouth = true; break;
             case LEFT:  goWest  = true; break;
             case RIGHT: goEast  = true; break;
+            case E:     goClockwise = true; break;
+            case Q:     goCounterClock = true; break;
         }
     }
 
@@ -91,6 +95,8 @@ public class Ball {
             case DOWN:  goSouth = false; break;
             case LEFT:  goWest  = false; break;
             case RIGHT: goEast  = false; break;
+            case E:     goClockwise = false; break;
+            case Q:     goCounterClock = false; break;
         }
     }
 
@@ -108,7 +114,7 @@ public class Ball {
 
     public Line getCannon() { return cannon.getLine(); }
 
-    public void updateCannon(int x, int y){
-        cannon.update(x,y);
+    public void updateCannon(double x, double y, boolean cw, boolean cc){
+        cannon.update(x,y,cw,cc);
     }
 }

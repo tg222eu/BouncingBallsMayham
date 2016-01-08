@@ -16,18 +16,31 @@ public class Cannon {
 
     }
 
-    public void update(double x, double y){
+    public void update(double x, double y, boolean cw, boolean cc){
 
         line.setStroke(Color.GRAY);
 
         line.setStartX(x);
         line.setStartY(y);
 
-        degree = degree + 1;
+        if (cw){
+            degree = degree + 1;
 
-        if(degree == 360){
-            degree = 1;
+            if(degree == 360){
+                degree = 1;
+            }
+
         }
+        else if (cc){
+            degree = degree - 1;
+
+            if (degree == 0){
+                degree = 359;
+
+            }
+
+        }
+
 
         double endX = x + 40 * Math.cos(degree * (Math.PI / 180));
         double endY = y + 40 * Math.sin(degree * (Math.PI / 180));

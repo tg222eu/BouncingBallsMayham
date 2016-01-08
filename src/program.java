@@ -23,7 +23,6 @@ public class program extends Application {
         launch(args);
     }
 
-
     public void start(Stage primaryStage) throws InterruptedException{
         BorderPane root = new BorderPane();
         BallPane pane = new BallPane();
