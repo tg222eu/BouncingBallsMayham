@@ -26,7 +26,7 @@ public class program extends Application {
 
     public void start(Stage primaryStage) throws InterruptedException{
         BorderPane root = new BorderPane();
-        Pane pane = new Pane();
+        BallPane pane = new BallPane();
 
         Ball ball = new Ball(250, 300);
 

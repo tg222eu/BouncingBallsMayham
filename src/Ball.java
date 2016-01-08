@@ -3,6 +3,7 @@ import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
@@ -18,6 +19,8 @@ public class Ball {
     int deltaY;
     public Enum pressedKey;
     public char ch;
+
+    public Circle bullet = new Circle();
 
     private Timeline animation;
 
@@ -35,6 +38,8 @@ public class Ball {
 
         circle = new Circle();
         circle.setRadius(30);
+        bullet.setRadius(5);
+        bullet.setFill(Color.RED);
 
         cannon = new Cannon();
         
@@ -66,9 +71,9 @@ public class Ball {
         if (goEast)  deltaX += 1;
         if (goWest)  deltaX -= 1;
 
-        circle.setLayoutX(x+deltaX);
+        circle.setLayoutX(x + deltaX);
         circle.setLayoutY(y + deltaY);
-        updateCannon((int)(x+deltaX), (int)(y + deltaY));
+        updateCannon((int) (x + deltaX), (int) (y + deltaY));
     }
 
     public void pressedKey(KeyCode e){
@@ -95,6 +100,10 @@ public class Ball {
 
     public Circle getBall(){
         return circle;
+    }
+
+    public Circle getBullet(){
+        return bullet;
     }
 
     public Line getCannon() { return cannon.getLine(); }
