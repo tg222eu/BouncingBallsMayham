@@ -22,7 +22,7 @@ public class Ball {
 
     public Circle bullet = new Circle();
 
-    private Timeline animation;
+    public Timeline animation;
 
     public Circle circle;
 

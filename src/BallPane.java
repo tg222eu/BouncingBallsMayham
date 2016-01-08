@@ -2,6 +2,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -13,12 +14,48 @@ public class BallPane extends Pane {
 
     Ball ball = new Ball(300, 300);
 
-    Button butt = new Button("shoot");
-
     public BallPane(){
+
+        Button shoot = new Button("Shoot");
+        shoot.setLayoutX(300);
+
+        ball.button.setOnKeyPressed(Event -> {
+            pressedKey(Event.getCode());
+            ball.animation.play();
+        });
+
+        ball.button.setOnKeyReleased(Event -> {
+            ball.releasedKey(Event.getCode());
+        });
+
         getChildren().addAll(ball.getBall(), ball.getButton(), ball.getCannon());
 
 
+    }
+
+    public void pressedKey(KeyCode e){
+        switch (e) {
+            case UP:    ball.goNorth = true; break;
+            case DOWN:  ball.goSouth = true; break;
+            case LEFT:  ball.goWest  = true; break;
+            case RIGHT: ball.goEast  = true; break;
+            case E:     ball.goClockwise = true; break;
+            case Q:     ball.goCounterClock = true; break;
+            case R:     ball.shootBullet = true; break;
+            case W:     shoot();
+        }
+    }
+
+    public void releasedKey(KeyCode e){
+        switch (e) {
+            case UP:    ball.goNorth = false; break;
+            case DOWN:  ball.goSouth = false; break;
+            case LEFT:  ball.goWest  = false; break;
+            case RIGHT: ball.goEast  = false; break;
+            case E:     ball.goClockwise = false; break;
+            case Q:     ball.goCounterClock = false; break;
+            case R:     ball.shootBullet = false; break;
+        }
     }
 
     public void shoot(){
@@ -40,28 +77,26 @@ public class BallPane extends Pane {
 
             degree = ball.cannon.degree;
 
-            animation = new Timeline(new KeyFrame(Duration.millis(10), Event -> run()));
+            animation = new Timeline(new KeyFrame(Duration.millis(5), Event -> run()));
             animation.setCycleCount(Timeline.INDEFINITE);
+
+            animation.play();
 
             x = ball.cannon.endX;
             y = ball.cannon.endY;
+
             dX = Math.cos(degree * (Math.PI / 180));
             dY = Math.sin(degree * (Math.PI / 180));
-
-
-            if (degree < 180 && degree < 270){
-
-                dX = dX * -1;
-
-            }
 
         }
 
         public void run(){
 
             x = x + dX;
+            y = y + dY;
 
             setLayoutX(x);
+            setLayoutY(y);
 
         }
 
