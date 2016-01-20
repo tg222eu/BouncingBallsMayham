@@ -31,6 +31,7 @@ public class Ball {
     public Circle circle;
 
     Cannon cannon = new Cannon();
+    Button button = new Button("run");
 
     public boolean goNorth = false;
     public boolean goSouth = false;
@@ -49,7 +50,7 @@ public class Ball {
         bullet.setFill(Color.RED);
 
         cannon = new Cannon();
-        
+
         x = cordX;
         y = cordY;
         deltaX = 1;

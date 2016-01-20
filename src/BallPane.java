@@ -8,12 +8,18 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 /**
  * Created by totte on 2016-01-08.
  */
 public class BallPane extends Pane {
 
     Ball ball = new Ball(300, 300);
+    
+    //Bullet[] bull = new Bullet[20];
+
+    ArrayList<Bullet> bull = new ArrayList<>();
 
     public BallPane(){
 
@@ -29,7 +35,6 @@ public class BallPane extends Pane {
         });
 
         getChildren().addAll(ball.getBall(), ball.getCannon());
-
 
     }
 
@@ -61,7 +66,22 @@ public class BallPane extends Pane {
     }
 
     public void shoot(){
-        getChildren().add(new Bullet());
+
+
+        if (bull.size() < 20){
+
+            bull.add(new Bullet());
+
+            getChildren().add(bull.get(bull.size()-1));
+
+        }
+
+    }
+    public void removeBullet(int n){
+
+        getChildren().removeAll(bull.get(n));
+        bull.remove(n);
+
     }
 
 
@@ -73,14 +93,19 @@ public class BallPane extends Pane {
         private double x, y;
         private double dX, dY;
 
+        private int distance;
+
         public Bullet(){
 
             setRadius(5);
+
 
             degree = ball.cannon.degree;
 
             animation = new Timeline(new KeyFrame(Duration.millis(5), Event -> run()));
             animation.setCycleCount(Timeline.INDEFINITE);
+            animation.play();
+
 
             animation.play();
 
@@ -90,6 +115,10 @@ public class BallPane extends Pane {
             dX = Math.cos(degree * (Math.PI / 180));
             dY = Math.sin(degree * (Math.PI / 180));
 
+        }
+
+        public int getDistance(){
+            return distance;
         }
 
         public void run(){
@@ -102,6 +131,13 @@ public class BallPane extends Pane {
             }
             if(y <= 0 || y >= 600){
                 dY *= -1;
+            }
+
+            distance++;
+
+            if (distance>800){
+                removeBullet(bull.indexOf(this));
+                animation.stop();
             }
 
             setLayoutX(x);
