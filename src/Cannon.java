@@ -44,7 +44,6 @@ public class Cannon {
 
         }
 
-
         endX = x + 40 * Math.cos(degree * (Math.PI / 180));
         endY = y + 40 * Math.sin(degree * (Math.PI / 180));
 

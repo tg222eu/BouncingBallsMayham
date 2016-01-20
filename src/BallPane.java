@@ -8,6 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.concurrent.ExecutorService;
+
 import java.util.ArrayList;
 
 /**
@@ -34,7 +36,7 @@ public class BallPane extends Pane {
             releasedKey(Event.getCode());
         });
 
-        getChildren().addAll(ball.getBall(), ball.getCannon());
+        getChildren().addAll(ball.getBall(), ball.getCannon(), ball.getHealth());
 
     }
 
@@ -104,8 +106,6 @@ public class BallPane extends Pane {
 
             animation = new Timeline(new KeyFrame(Duration.millis(5), Event -> run()));
             animation.setCycleCount(Timeline.INDEFINITE);
-            animation.play();
-
 
             animation.play();
 

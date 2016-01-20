@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
@@ -21,6 +22,8 @@ public class Ball {
     double delta2Y = 1;
     public Enum pressedKey;
     public char ch;
+    public Text healthText = new Text("100");
+    public int health = 100;
 
     public boolean gravityMode = false;
 
@@ -48,6 +51,8 @@ public class Ball {
         circle.setRadius(30);
         bullet.setRadius(5);
         bullet.setFill(Color.RED);
+        healthText.setText(Integer.toString(health));
+        healthText.setFill(Color.RED);
 
         cannon = new Cannon();
 
@@ -66,6 +71,8 @@ public class Ball {
     }
 
     public void run(){
+        getHealth().setLayoutX(x-13);
+        getHealth().setLayoutY(y-35);
         if(!gravityMode) {
             if (goNorth) deltaY = -1;
             if (goSouth) deltaY = 1;
@@ -109,6 +116,10 @@ public class Ball {
     }
 
     public Line getCannon() { return cannon.getLine(); }
+
+    public Text getHealth(){
+        return healthText;
+    }
 
     public void updateCannon(double x, double y, boolean cw, boolean cc){
         cannon.update(x,y,cw,cc);
