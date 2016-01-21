@@ -11,15 +11,17 @@ import javafx.util.Duration;
 import java.util.concurrent.ExecutorService;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 /**
  * Created by totte on 2016-01-08.
  */
 public class BallPane extends Pane {
 
-    Ball ball = new Ball(300, 300);
-    
-    //Bullet[] bull = new Bullet[20];
+    public ArrayList<Ball> ballList = new ArrayList<>();
+
+    Ball ball = new Ball(500, 300);
+    Ball ball2 = new Ball(100, 300);
 
     ArrayList<Bullet> bull = new ArrayList<>();
 
@@ -29,42 +31,16 @@ public class BallPane extends Pane {
 
         ball.circle.setOnKeyPressed(Event -> {
             pressedKey(Event.getCode());
-            ball.animation.play();
         });
 
         ball.circle.setOnKeyReleased(Event -> {
             releasedKey(Event.getCode());
         });
 
-        getChildren().addAll(ball.getBall(), ball.getCannon(), ball.getHealth());
+        //ball2.playBall(ball2);
 
-    }
+        getChildren().addAll(ball.getBall(), ball.getCannon(), ball.getHealth(), ball2.getBall(), ball2.getCannon(), ball2.getHealth());
 
-    public void pressedKey(KeyCode e){
-        switch (e) {
-            case UP:    ball.goNorth = true; break;
-            case DOWN:  ball.goSouth = true; break;
-            case LEFT:  ball.goWest  = true; break;
-            case RIGHT: ball.goEast  = true; break;
-            case E:     ball.goClockwise = true; break;
-            case Q:     ball.goCounterClock = true; break;
-            case R:     ball.shootBullet = true; break;
-            case W:     shoot(); break;
-            case M:     ball.gravityMode = false; break;
-            case N:     ball.gravityMode = true; break;
-        }
-    }
-
-    public void releasedKey(KeyCode e){
-        switch (e) {
-            case UP:    ball.goNorth = false; break;
-            case DOWN:  ball.goSouth = false; break;
-            case LEFT:  ball.goWest  = false; break;
-            case RIGHT: ball.goEast  = false; break;
-            case E:     ball.goClockwise = false; break;
-            case Q:     ball.goCounterClock = false; break;
-            case R:     ball.shootBullet = false; break;
-        }
     }
 
     public void shoot(){
@@ -85,7 +61,6 @@ public class BallPane extends Pane {
         bull.remove(n);
 
     }
-
 
     class Bullet extends Circle {
 
@@ -135,6 +110,25 @@ public class BallPane extends Pane {
 
             distance++;
 
+            //int calcX = (int)(Math.sqrt(Math.pow(ball.x, 2) - Math.pow(x, 2)));
+            //int calcY = (int)(Math.sqrt(Math.pow(ball.y, 2) - Math.pow(y, 2)));
+
+            double calcX = ball.x - x;
+            double calcY = ball.y - y;
+
+            if(calcX < 0){
+                calcX *= -1;
+            }
+            if(calcY < 0){
+                calcY *= -1;
+            }
+
+            if(calcX < 30 && calcY < 30){
+                ball.health -= 10;
+                removeBullet(bull.indexOf(this));
+                animation.stop();
+            }
+
             if (distance>800){
                 removeBullet(bull.indexOf(this));
                 animation.stop();
@@ -143,6 +137,41 @@ public class BallPane extends Pane {
             setLayoutX(x);
             setLayoutY(y);
 
+        }
+    }
+
+    public void pressedKey(KeyCode e){
+        switch (e) {
+            case UP:    ball.goNorth = true; break;
+            case DOWN:  ball.goSouth = true; break;
+            case LEFT:  ball.goWest  = true; break;
+            case RIGHT: ball.goEast  = true; break;
+            case P:     ball.goClockwise = true; break;
+            case I:     ball.goCounterClock = true; break;
+            case W:     ball2.goNorth = true; break;
+            case S:     ball2.goSouth = true; break;
+            case A:     ball2.goWest  = true; break;
+            case D:     ball2.goEast  = true; break;
+            case O:     shoot(); break;
+            case M:     ball.gravityMode = false; break;
+            case N:     ball.gravityMode = true; break;
+        }
+    }
+
+    public void releasedKey(KeyCode e){
+        switch (e) {
+            case UP:    ball.goNorth = false; break;
+            case DOWN:  ball.goSouth = false; break;
+            case LEFT:  ball.goWest  = false; break;
+            case RIGHT: ball.goEast  = false; break;
+            case P:     ball.goClockwise = false; break;
+            case I:     ball.goCounterClock = false; break;
+            case O:     ball.shootBullet = false; break;
+
+            case W:    ball2.goNorth = false; break;
+            case S:    ball2.goSouth = false; break;
+            case A:    ball2.goWest  = false; break;
+            case D:    ball2.goEast  = false; break;
         }
     }
 }

@@ -12,7 +12,7 @@ import javafx.util.Duration;
 /**
  * Created by totte on 2016-01-08.
  */
-public class Ball {
+public class Ball{
 
     double x;
     double y;
@@ -24,6 +24,10 @@ public class Ball {
     public char ch;
     public Text healthText = new Text("100");
     public int health = 100;
+
+    public boolean deltaXpositive = true;
+    public boolean deltaYpositive= true;
+    public int degree = 0;
 
     public boolean gravityMode = false;
 
@@ -66,50 +70,66 @@ public class Ball {
 
         animation = new Timeline(new KeyFrame(Duration.millis(10), Event -> run()));
         animation.setCycleCount(Timeline.INDEFINITE);
-
+        this.animation.play();
 
     }
 
     public void run(){
-        getHealth().setLayoutX(x-13);
-        getHealth().setLayoutY(y-35);
-        if(!gravityMode) {
-            if (goNorth) deltaY = -1;
-            if (goSouth) deltaY = 1;
-            if (goEast) deltaX = 1;
-            if (goWest) deltaX = -1;
+            getHealth().setLayoutX(x - 13);
+            getHealth().setLayoutY(y - 35);
+            healthText.setText(Integer.toString(health));
+            if (!gravityMode) {
+                if (goNorth) deltaY = -1;
+                if (goSouth) deltaY = 1;
+                if (goEast) deltaX = 1;
+                if (goWest) deltaX = -1;
 
-            if(goNorth == true || goSouth == true) {
-                y = y + deltaY;
+                if (goNorth == true || goSouth == true) {
+                    y = y + deltaY;
+                }
+                if (goEast == true || goWest == true) {
+                    x = x + deltaX;
+                }
+
+                circle.setLayoutX(x);
+                circle.setLayoutY(y);
+
+                updateCannon(x + deltaX, y + deltaY, goClockwise, goCounterClock);
+            } else {
+
+
+                delta2X = Math.cos(degree * (Math.PI / 180));
+                delta2Y = Math.sin(degree * (Math.PI / 180));
+
+                if (goEast) degree -= 1;
+                if (goWest) degree += 1;
+
+                if (x >= 570) {
+                    degree = 180-degree;
+                    x = 568;
+                }
+
+                if (x <= 30) {
+                    degree = 180-degree;
+                    x = 32;
+                }
+                if (y >= 570) {
+                    degree = 360 - degree;
+                    y = 568;
+                }
+                if (y <= 30) {
+                    degree = 360 - degree;
+                    y = 32;
+                }
+
+                x = x + delta2X;
+                y = y + delta2Y;
+                circle.setLayoutX(x);
+                circle.setLayoutY(y);
+                updateCannon(x, y, goClockwise, goCounterClock);
             }
-            if(goEast == true || goWest == true){
-                x = x + deltaX;
-            }
-
-            circle.setLayoutX(x);
-            circle.setLayoutY(y);
-
-            updateCannon(x + deltaX, y + deltaY, goClockwise, goCounterClock);
-        }else{
-            if (goNorth && delta2Y > -1) delta2Y -= 0.01;
-            if (goSouth && delta2Y < 1.01) delta2Y += 0.01;
-            if (goEast && delta2X < 1.01) delta2X += 0.01;
-            if (goWest && delta2X > -1) delta2X -= 0.01;
-
-            if(x <= 0 || x >= 600){
-                delta2X *= -1;
-            }
-            if(y <= 0 || y >= 600){
-                delta2Y *= -1;
-            }
-
-            x = x + delta2X;
-            y = y + delta2Y;
-            circle.setLayoutX(x);
-            circle.setLayoutY(y);
-            updateCannon(x, y, goClockwise, goCounterClock);
-        }
     }
+
 
     public Circle getBall(){
         return circle;
@@ -123,5 +143,58 @@ public class Ball {
 
     public void updateCannon(double x, double y, boolean cw, boolean cc){
         cannon.update(x,y,cw,cc);
+    }
+
+    class Cannon {
+
+        private Line line;
+        public int degree;
+        public double endX;
+        public double endY;
+
+
+
+        public Cannon(){
+
+            line = new Line();
+
+        }
+
+        public void update(double x, double y, boolean cw, boolean cc){
+
+            line.setStroke(Color.GRAY);
+
+            line.setStartX(x);
+            line.setStartY(y);
+
+            if (cw){
+                degree = degree + 1;
+
+                if(degree == 360){
+                    degree = 1;
+                }
+
+            }
+            else if (cc){
+                degree = degree - 1;
+
+                if (degree == 0){
+                    degree = 359;
+
+                }
+
+            }
+
+            endX = x + 40 * Math.cos(degree * (Math.PI / 180));
+            endY = y + 40 * Math.sin(degree * (Math.PI / 180));
+
+            line.setEndX(endX);
+            line.setEndY(endY);
+        }
+
+        public Line getLine() { return line; }
+
+        public int getDegree() { return degree; }
+
     }
 }
