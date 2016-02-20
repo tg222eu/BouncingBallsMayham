@@ -36,7 +36,7 @@ public class program extends Application {
         root.setTop(new MenuModule().getMenu());
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
-        pane.ball.circle.requestFocus();
+        pane.ball.requestFocus();
         //pane.ball2.circle.requestFocus();
     }
 

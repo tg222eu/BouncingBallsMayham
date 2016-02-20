@@ -1,6 +1,7 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -12,7 +13,7 @@ import javafx.util.Duration;
 /**
  * Created by totte on 2016-01-08.
  */
-public class Ball{
+public class Ball extends Group{
 
     double x;
     double y;
@@ -29,13 +30,13 @@ public class Ball{
     public boolean deltaYpositive= true;
     public int degree = 0;
 
-    public boolean gravityMode = false;
+    public Circle circle = new Circle();
+
+    static boolean gravityMode = false;
 
     public Circle bullet = new Circle();
 
     public Timeline animation;
-
-    public Circle circle;
 
     Cannon cannon = new Cannon();
     Button button = new Button("run");
@@ -51,19 +52,22 @@ public class Ball{
 
     public Ball(int cordX, int cordY){
 
-        circle = new Circle();
         circle.setRadius(30);
         bullet.setRadius(5);
         bullet.setFill(Color.RED);
         healthText.setText(Integer.toString(health));
         healthText.setFill(Color.RED);
 
-        cannon = new Cannon();
+        //cannon = new Cannon();
+
+
 
         x = cordX;
         y = cordY;
         deltaX = 1;
         deltaY = 1;
+
+        getChildren().addAll(cannon);
 
         circle.setLayoutX(x);
         circle.setLayoutY(y);
@@ -75,6 +79,7 @@ public class Ball{
     }
 
     public void run(){
+
             getHealth().setLayoutX(x - 13);
             getHealth().setLayoutY(y - 35);
             healthText.setText(Integer.toString(health));
@@ -145,56 +150,4 @@ public class Ball{
         cannon.update(x,y,cw,cc);
     }
 
-    class Cannon {
-
-        private Line line;
-        public int degree;
-        public double endX;
-        public double endY;
-
-
-
-        public Cannon(){
-
-            line = new Line();
-
-        }
-
-        public void update(double x, double y, boolean cw, boolean cc){
-
-            line.setStroke(Color.GRAY);
-
-            line.setStartX(x);
-            line.setStartY(y);
-
-            if (cw){
-                degree = degree + 1;
-
-                if(degree == 360){
-                    degree = 1;
-                }
-
-            }
-            else if (cc){
-                degree = degree - 1;
-
-                if (degree == 0){
-                    degree = 359;
-
-                }
-
-            }
-
-            endX = x + 40 * Math.cos(degree * (Math.PI / 180));
-            endY = y + 40 * Math.sin(degree * (Math.PI / 180));
-
-            line.setEndX(endX);
-            line.setEndY(endY);
-        }
-
-        public Line getLine() { return line; }
-
-        public int getDegree() { return degree; }
-
-    }
 }
